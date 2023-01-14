@@ -17,9 +17,6 @@ export default function BiorhythmCard({targetdate}) {
             </IonCardTitle>
         </IonCardHeader>
 
-
-
-
         <IonCardContent>
     
             <p>Physical : </p>
