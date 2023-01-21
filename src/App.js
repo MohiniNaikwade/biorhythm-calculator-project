@@ -1,62 +1,48 @@
-import { IonApp, IonContent, IonHeader, IonInput, IonTitle, IonToolbar,IonLabel,IonItem,IonList } from '@ionic/react';
+import { IonApp, IonContent, IonHeader, IonInput, IonItem, IonLabel, IonList, IonTitle, IonToolbar } from '@ionic/react';
 import { useState } from 'react';
 import BiorhythmCard from './Components/BiorhythmCard';
-function getToday()
-{
-  return new Date().toISOString().slice(0,'yyyy-mm-dd'.length);
+import { useStoredState } from './lib/hooks';
+
+function getToday() {
+  return new Date().toISOString().slice(0, 'yyyy-mm-dd'.length);
 }
 
 function App() {
-  
-  const [name,setName] = useState('');
-  const [birthdate,setbirthdate] = useState('');
-  const [targetdate,settargetdate] = useState(getToday);
-  
+  const [birthDate, setBirthDate] = useStoredState('birthDate', '');
+  const [targetDate, setTargetDate] = useState(getToday);
+
   return (
     <IonApp>
       <IonHeader>
-        <IonToolbar>
-          <IonTitle>BIORYTHMS</IonTitle>
+        <IonToolbar color="primary">
+          <IonTitle>Biorhythms</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent className="ion-padding">
+        {Boolean(birthDate) && (
+          <BiorhythmCard birthDate={birthDate} targetDate={targetDate} />
+        )}
         <IonList>
           <IonItem>
-            <IonLabel position= "stacked">
-              Name:
+            <IonLabel position="fixed">
+              Birth Date:
             </IonLabel>
-            <IonInput value={name} onIonChange={(event) => setName(event.detail.value)}     
-             />
-      
+            <IonInput type="date" value={birthDate}
+              onIonChange={(event) => setBirthDate(event.detail.value)}
+            />
           </IonItem>
           <IonItem>
-            <IonLabel position= "stacked">
-              BirthDate:
+            <IonLabel position="fixed">
+              Target Date:
             </IonLabel>
-            <IonInput type="date" value={birthdate}
-            onIonChange={(event)=> setbirthdate(event.detail.value)}
-            
-            /> 
-          
+            <IonInput type="date" value={targetDate}
+              onIonChange={(event) => setTargetDate(event.detail.value)}
+            />
           </IonItem>
-          <IonItem>
-            <IonLabel position= "stacked">
-              TargetDate:
-            </IonLabel>
-            <IonInput type="date" value={targetdate}
-            onIonChange={(event)=> settargetdate(event.detail.value)}
-            
-            /> 
-            
-          </IonItem>
-      
-          </IonList>
-      
-        <BiorhythmCard targetdate={targetdate} />
+        </IonList>
       </IonContent>
     </IonApp>
   );
-  
 }
 
 export default App;
